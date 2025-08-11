@@ -27,15 +27,19 @@ function EmailVerification() {
 
     try {
       const response = await axios.get(
-        `/api/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`
+        `/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`,
+        {
+          headers: {
+            'Authorization': undefined
+          }
+        }
       );
       
       setStatus('success');
       setMessage(response.data.message || 'Email verified successfully!');
       
-      // Redirect to login after 3 seconds
       setTimeout(() => {
-        navigate('/');
+        navigate('/?email_verified=true');
       }, 3000);
     } catch (error) {
       setStatus('error');
@@ -79,7 +83,6 @@ function EmailVerification() {
 
 export default EmailVerification;
 
-// Add this CSS to your App.css or create a separate CSS file
 const emailVerificationStyles = `
 .email-verification {
   min-height: 100vh;
